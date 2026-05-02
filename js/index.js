@@ -1,4 +1,4 @@
-import * as boo from './js/boo.js';
+import * as boo from './boo.js';
 
 const boton = document.getElementById('btn-generar');
 const display = document.getElementById('resultado');
