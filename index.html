@@ -1,1 +1,21 @@
-beep
+<html>
+    <script type="module">
+      import * as boo from './js/boo.js';
+
+      const boton = document.getElementById('btn-generar');
+      const display = document.getElementById('resultado');
+      
+      const manejarClick = () => {
+        const bytes = MyToolbox.getRandomBytes(16);
+        const hex = MyToolbox.bytesToHex(bytes);
+
+        display.textContent = `Generado: ${hex}`;
+      };
+      
+      boton.addEventListener('click', manejarClick);
+    </script>
+  <body>
+    <button id="btn-generar">Generar Bytes</button>
+    <div id="resultado"></div>
+  </body>
+</html>
