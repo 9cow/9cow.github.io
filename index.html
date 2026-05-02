@@ -3,19 +3,7 @@
     <button id="btn-generar">Generar 16 Bytes</button>
     <div id="resultado"></div>
     <script type="module">
-      import * as boo from './js/boo.js';
-
-      const boton = document.getElementById('btn-generar');
-      const display = document.getElementById('resultado');
       
-      const manejarClick = () => {
-        const bytes = boo.getRandomBytes(16);
-        const hex = boo.bytesToHex(bytes);
-
-        display.textContent = `Generado: ${hex}`;
-      };
-      
-      boton.addEventListener('click', manejarClick);
     </script>
   </body>
 </html>
