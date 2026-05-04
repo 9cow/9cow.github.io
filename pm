@@ -22,6 +22,14 @@ class GitHub:
   api_access = "Unknown"
 
   @classmethod
+  def force_ipv4(cls):
+    old_getaddrinfo = socket.getaddrinfo
+    def new_getaddrinfo(*args, **kwargs):
+        res = old_getaddrinfo(*args, **kwargs)
+        return [r for r in res if r[0] == socket.AF_INET]
+    socket.getaddrinfo = new_getaddrinfo
+
+  @classmethod
   def getFileFromAPI(cls,path):
     path = path.split("|")
     url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb=uuid.uuid4().hex"
@@ -44,6 +52,7 @@ class GitHub:
     
   @classmethod
   def getFile(cls,path):
+    cls.force_ipv4()
     if cls.api_access == "Restricted":
       return cls.getFileFromRAW(path)
     else:
