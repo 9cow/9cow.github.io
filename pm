@@ -16,9 +16,9 @@ class GitHub:
             content_b64 = data['content']
             return base64.b64decode(content_b64).decode('utf-8')
     except urllib.error.HTTPError as e:
-        return f"HTTP Error: {e.code}"
+        raise e
     except Exception as e:
-        return f"Error: {str(e)}"
+        raise e
 
   @classmethod
   def getFileFromRAW(cls,path):
