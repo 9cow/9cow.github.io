@@ -7,15 +7,24 @@ import urllib.error
 from types import SimpleNamespace
 
 class Runtime:
+  """
+  Manages common methods
+  """
   updated = "2026-05-04 14:54:01"
   User_Agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 
   @classmethod
   def run(cls,code):
+    """
+    Runs code from a string
+    """
     exec(code,globals())
 
   @classmethod
   def get(cls, url):
+      """
+      Gets content from a http/https url
+      """
       headers = {
           'User-Agent': cls.User_Agent
       }
@@ -38,10 +47,17 @@ class Runtime:
           raise e
 
 class GitHub:
+  """
+  Manages GitHub file access
+  """
   api_access = "Unknown"
 
   @classmethod
   def getFileFromAPI(cls, path):
+      """
+      Retrives a file from github using GitHub API
+      path must be "$user|$repo|$path"
+      """
       path = path.split("|")
       url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb={uuid.uuid4().hex}"
       req = urllib.request.Request(url)
@@ -71,11 +87,20 @@ class GitHub:
 
   @classmethod
   def getFileFromRAW(cls,path):
+    """
+    Retrives a file from github using GitHub Raw Access
+    path must be "$user|$repo|$path"
+    """
     path = path.split("|")
     return Runtime.get(f"https://raw.githubusercontent.com/{path[0]}/{path[1]}/refs/heads/main/{path[2]}?nocache=uuid.uuid4().hex")
     
   @classmethod
   def getFile(cls,path):
+    """
+    Tries to retrieve a file from GitHub using GitHub API
+    If it cannot use the API, it will use GitHub RAW access
+    path must be "$user|$repo|$path"
+    """
     try:
       result = cls.getFileFromAPI(path)
       if result.status != 403:
