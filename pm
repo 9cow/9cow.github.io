@@ -5,11 +5,11 @@ import uuid
 
 class Runtime:
   @classmethod
-  def run(code):
+  def run(cls,code):
     exec(code,globals())
 
   @classmethod
-  def get(url):
+  def get(cls,url):
     return urllib.request.urlopen(url).read().decode('utf-8')
 
 class GitHub:
