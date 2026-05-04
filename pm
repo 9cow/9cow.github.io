@@ -28,7 +28,7 @@ class GitHub:
     req = urllib.request.Request(url)
     req.add_header('User-Agent', 'Python-Urllib-db0bc')
     try:
-        with urllib.request.urlopen(req) as response:
+        with urllib.request.urlopen(req, timeout=1) as response:
             data = json.loads(response.read().decode('utf-8'))
             content_b64 = data['content']
             cls.api_access = "Allowed"
