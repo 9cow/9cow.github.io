@@ -58,6 +58,7 @@ class GitHub:
       print(result.status)
       return result
     except Exception as e:
+      print(e)
       return cls.getFileFromRAW(path)
 
 print("ver 0.94b")
