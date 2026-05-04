@@ -2,7 +2,7 @@ import urllib.request
 import json
 import base64
 import uuid
-import socket
+from types import SimpleNamespace
 
 class Runtime:
   User_Agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -18,8 +18,11 @@ class Runtime:
     }
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req) as response:
+        result = SimpleNamespace()
+        result.status = response.status
         charset = response.info().get_content_charset() or 'utf-8'
-        return response.read().decode(charset)
+        result.content = response.read().decode(charset)
+        return result
 
 class GitHub:
   api_access = "Unknown"
@@ -32,10 +35,13 @@ class GitHub:
     req.add_header('User-Agent', Runtime.User_Agent)
     try:
         with urllib.request.urlopen(req) as response:
+            result = SimpleNamespace()
+            result.status = response.status
             data = json.loads(response.read().decode('utf-8'))
             content_b64 = data['content']
             cls.api_access = "Allowed"
-            return base64.b64decode(content_b64).decode('utf-8')
+            result.content = base64.b64decode(content_b64).decode('utf-8')
+            return result
     except Exception as e:
         cls.api_access = "Restricted"
         raise e
@@ -51,5 +57,6 @@ class GitHub:
       return cls.getFileFromAPI(path)
     except Exception as e:
       return cls.getFileFromRAW(path)
-      
-Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
+
+print("ver 0.94a")
+Runtime.run(GitHub.getFile("db0bc|pm|pm.py").content)
