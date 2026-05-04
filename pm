@@ -27,11 +27,10 @@ class u:
     return urllib.request.urlopen(url).read()
     
   @classmethod
-  def readGithubFile(cls,path):
+  def getFile_GitHub(cls,path):
     try:
       return cls.getFile_GitHubAPI(path)
     except Exception as e:
       return cls.getFile_GitHubRAW(path)
 
-print("reading")
-exec(u.readGithubFile("db0bc|pm|pm"))
+exec(u.getFile_GitHub("db0bc|pm|pm"), globals())
