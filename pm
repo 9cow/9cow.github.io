@@ -84,5 +84,4 @@ class GitHub:
       print(e)
       return cls.getFileFromRAW(path)
 
-print("ver 0.94e")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py").content)
