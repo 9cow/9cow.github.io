@@ -23,6 +23,10 @@ class u:
 
   @classmethod
   readGithubFile(cls,path):
+    try:
+      return cls.GithubAPI(path)
+    except Exception as e:
+      raise e
     print(path)
 
 exec(u.readGithubFile("db0bc|pm|pm"))
