@@ -43,4 +43,5 @@ class GitHub:
     except Exception as e:
       return cls.getFileFromRAW(path)
 
+print("db0bc version: 2026-05-03 19:34")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
