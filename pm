@@ -77,8 +77,9 @@ class GitHub:
   def getFile(cls,path):
     try:
       result = cls.getFileFromAPI(path)
-      print(result.status)
-      return result
+      if result.status == 200:
+        return result
+      return cls.getFileFromRAW(path)
     except Exception as e:
       print(e)
       return cls.getFileFromRAW(path)
