@@ -4,6 +4,8 @@ import base64
 import uuid
 
 class GitHub:
+  api_access = "Unknown"
+
   @classmethod
   def getFileFromAPI(cls,path):
     path = path.split("|")
@@ -14,10 +16,10 @@ class GitHub:
         with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode('utf-8'))
             content_b64 = data['content']
+            cls.api_access = "Allowed"
             return base64.b64decode(content_b64).decode('utf-8')
-    except urllib.error.HTTPError as e:
-        raise e
     except Exception as e:
+        cls.api_access = "Restricted"
         raise e
 
   @classmethod
