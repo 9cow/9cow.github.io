@@ -47,10 +47,10 @@ class GitHub:
     if cls.api_access == "Restricted":
       return cls.getFileFromRAW(path)
     else:
-    try:
-      return cls.getFileFromAPI(path)
-    except Exception as e:
-      return cls.getFileFromRAW(path)
+      try:
+        return cls.getFileFromAPI(path)
+      except Exception as e:
+        return cls.getFileFromRAW(path)
 
 print("ver 0.98c")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
