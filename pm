@@ -60,5 +60,5 @@ class GitHub:
       except Exception as e:
         return cls.getFileFromRAW(path)
 
-print("ver 0.98f")
+print("ver 0.94a")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
