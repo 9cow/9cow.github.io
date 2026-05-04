@@ -6,7 +6,7 @@ import uuid
 class u:
   @classmethod
   GithubAPI(cls,path):
-    path = path.split("|)
+    path = path.split("|")
     cache_buster = uuid.uuid4().hex
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref=main&cb={cache_buster}"
     req = urllib.request.Request(url)
