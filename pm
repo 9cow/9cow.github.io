@@ -33,4 +33,4 @@ class GitHub:
     except Exception as e:
       return cls.getFileFromRAW(path)
 
-exec(GitHub.getFile("db0bc|pm|pm"), globals())
+exec(GitHub.getFile("db0bc|pm|pm.py"), globals())
