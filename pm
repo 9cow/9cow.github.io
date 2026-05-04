@@ -4,6 +4,8 @@ import base64
 import uuid
 import socket
 
+_orig_getaddrinfo = socket.getaddrinfo
+
 class Runtime:
   @classmethod
   def run(cls,code):
@@ -24,9 +26,12 @@ class GitHub:
 
   @classmethod
   def speedup(cls):
-    def getaddrinfo_ipv4(host, port, family=0, type=0, proto=0, flags=0):
-        return socket.getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
-    socket.getaddrinfo = getaddrinfo_ipv4
+    def getaddrinfo_v4(*args, **kwargs):
+        args = list(args)
+        if len(args) >= 3:
+            args[2] = socket.AF_INET
+        return _orig_getaddrinfo(*args, **kwargs)
+    socket.getaddrinfo = getaddrinfo_v4
 
   @classmethod
   def getFileFromAPI(cls,path):
