@@ -4,8 +4,6 @@ import base64
 import uuid
 import socket
 
-_orig_getaddrinfo = socket.getaddrinfo
-
 class Runtime:
   @classmethod
   def run(cls,code):
@@ -23,16 +21,6 @@ class Runtime:
 
 class GitHub:
   api_access = "Unknown"
-
-  @classmethod
-  def speedup(cls):
-    return
-    def getaddrinfo_v4(*args, **kwargs):
-        args = list(args)
-        if len(args) >= 3:
-            args[2] = socket.AF_INET
-        return _orig_getaddrinfo(*args, **kwargs)
-    socket.getaddrinfo = getaddrinfo_v4
 
   @classmethod
   def getFileFromAPI(cls,path):
@@ -58,7 +46,6 @@ class GitHub:
   @classmethod
   def getFile(cls,path):
     print(f"Fetching: {path}")
-    cls.speedup()
     try:
       return cls.getFileFromAPI(path)
     except Exception as e:
