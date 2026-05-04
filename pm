@@ -29,11 +29,8 @@ class GitHub:
   @classmethod
   def getFile(cls,path):
     try:
-      print("GitHub.API")
       return cls.getFileFromAPI(path)
     except Exception as e:
-      print("GitHub.RAW")
       return cls.getFileFromRAW(path)
 
-print("new version")
 exec(GitHub.getFile("db0bc|pm|pm.py"), globals())
