@@ -15,7 +15,8 @@ class Runtime:
     }
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req) as response:
-        return response.read().decode('utf-8')
+        charset = response.info().get_content_charset() or 'utf-8'
+        return response.read().decode(charset)
 
 class GitHub:
   api_access = "Unknown"
