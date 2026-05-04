@@ -26,6 +26,7 @@ class GitHub:
 
   @classmethod
   def speedup(cls):
+    return
     def getaddrinfo_v4(*args, **kwargs):
         args = list(args)
         if len(args) >= 3:
@@ -63,5 +64,5 @@ class GitHub:
     except Exception as e:
       return cls.getFileFromRAW(path)
 
-print("ver 0.94a.3")
+print("ver 0.94a.4")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
