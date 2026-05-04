@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>github.io website</title>
+    <title>9cow - Code Over Web</title>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
@@ -11,23 +11,46 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter&display=swap" rel="stylesheet">
     <style>
-        body{background-color:#0d1117;color:#c9d1d9;font-family:Inter,sans-serif;margin:0;padding:2rem;line-height:1.6}a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}.container{max-width:800px;margin:auto}h1{font-weight:400;margin-bottom:1rem}.code-block{position:relative;margin:1.5em 0}.copy-btn{position:absolute;top:10px;left:10px;padding:5px 10px;font-size:.75rem;background-color:#21262d;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;cursor:pointer;transition:background .2s,transform .2s;z-index:1}.copy-btn:hover{background-color:#30363d;transform:scale(1.05)}pre{background:#161b22;padding:1rem 1rem 1rem 4.5rem;border-radius:8px;overflow-x:auto;font-family:'Fira Code',monospace;font-size:.9rem;position:relative}code{color:#c9d1d9}.section-title{margin-top:2rem;font-size:1.1rem;font-weight:500;color:#8b949e}
+        body{background-color:#0d1117;color:#c9d1d9;font-family:Inter,sans-serif;margin:0;padding:2rem;line-height:1.6}
+        a{color:#58a6ff;text-decoration:none}
+        a:hover{text-decoration:underline}
+        .container{max-width:800px;margin:auto}
+        .header{margin-bottom:2.5rem;text-align:center}
+        h1{font-family:'Fira Code',monospace;font-size:2.5rem;margin:0;color:#f0f6fc}
+        .tagline{color:#8b949e;font-size:1.1rem;margin-top:0.5rem}
+        .code-block{position:relative;margin:1.5em 0}
+        .copy-btn{position:absolute;top:10px;left:10px;padding:5px 10px;font-size:.75rem;background-color:#21262d;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;cursor:pointer;transition:background .2s,transform .2s;z-index:1}
+        .copy-btn:hover{background-color:#30363d;transform:scale(1.05)}
+        pre{background:#161b22;padding:1rem 1rem 1rem 4.5rem;border-radius:8px;overflow-x:auto;font-family:'Fira Code',monospace;font-size:.9rem;position:relative;border:1px solid #30363d}
+        code{color:#c9d1d9}
+        .section-title{margin-top:2rem;font-size:1.1rem;font-weight:500;color:#8b949e;text-align:center}
     </style>
 </head>
 
 <body>
-  <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    <pre><code class="language-bash">python -c "import urllib.request as u;exec(u.urlopen('http://9cow.github.io/pm').read())"</code></pre>
-  </div>
-  <script>
-function copyCode(button) {
-  const code = button.nextElementSibling.innerText;
-  navigator.clipboard.writeText(code).then(() => {
-  button.textContent = "Copied!";
-  setTimeout(() => button.textContent = "Copy", 1200);
-  });
-}
+    <div class="container">
+        <header class="header">
+            <h1>9cow</h1>
+            <div class="tagline">Code Over Web</div>
+        </header>
+
+        <div class="section-title">Install / Run</div>
+        
+        <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code class="language-bash">python -c "import urllib.request as u;exec(u.urlopen('http://9cow.github.io/pm').read())"</code></pre>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(button) {
+            const code = button.nextElementSibling.innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = "Copied!";
+                setTimeout(() => button.textContent = "Copy", 1200);
+            });
+        }
     </script>
 </body>
+
 </html>
