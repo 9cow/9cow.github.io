@@ -40,7 +40,7 @@ class GitHub:
     req = urllib.request.Request(url)
     req.add_header('User-Agent', 'Python-Urllib-db0bc')
     try:
-        with urllib.request.urlopen(req, timeout=1) as response:
+        with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode('utf-8'))
             content_b64 = data['content']
             cls.api_access = "Allowed"
@@ -56,14 +56,12 @@ class GitHub:
     
   @classmethod
   def getFile(cls,path):
+    print(f"Fetching: {path}")
     cls.speedup()
-    if cls.api_access == "Restricted":
+    try:
+      return cls.getFileFromAPI(path)
+    except Exception as e:
       return cls.getFileFromRAW(path)
-    else:
-      try:
-        return cls.getFileFromAPI(path)
-      except Exception as e:
-        return cls.getFileFromRAW(path)
 
-print("ver 0.94a.1")
+print("ver 0.94a.2")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
