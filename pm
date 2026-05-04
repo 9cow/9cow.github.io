@@ -45,11 +45,9 @@ class GitHub:
     
   @classmethod
   def getFile(cls,path):
-    print(f"Fetching: {path}")
     try:
       return cls.getFileFromAPI(path)
     except Exception as e:
       return cls.getFileFromRAW(path)
-
-print("ver 0.94a.4")
+      
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
