@@ -6,7 +6,6 @@ import uuid
 class u:
   @classmethod
   def getFile_GitHubAPI(cls,path):
-    raise Exception("A")
     path = path.split("|")
     url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb=uuid.uuid4().hex"
     req = urllib.request.Request(url)
@@ -34,5 +33,5 @@ class u:
     except Exception as e:
       return cls.getFile_GitHubRAW(path)
 
-print("LLOOO")
+print("reading")
 exec(u.readGithubFile("db0bc|pm|pm"))
