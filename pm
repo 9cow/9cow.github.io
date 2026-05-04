@@ -3,7 +3,7 @@ import json
 import base64
 import uuid
 
-class Runtime
+class Runtime:
   @classmethod
   def run(code):
     exec(code,globals())
