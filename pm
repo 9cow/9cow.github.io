@@ -38,7 +38,7 @@ class GitHub:
     path = path.split("|")
     url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb=uuid.uuid4().hex"
     req = urllib.request.Request(url)
-    req.add_header('User-Agent', 'Python-Urllib-db0bc')
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
     try:
         with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode('utf-8'))
@@ -63,5 +63,5 @@ class GitHub:
     except Exception as e:
       return cls.getFileFromRAW(path)
 
-print("ver 0.94a.2")
+print("ver 0.94a.3")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
