@@ -44,6 +44,9 @@ class GitHub:
     
   @classmethod
   def getFile(cls,path):
+    if cls.api_access == "Restricted":
+      return cls.getFileFromRAW(path)
+    else:
     try:
       return cls.getFileFromAPI(path)
     except Exception as e:
