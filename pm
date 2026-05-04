@@ -5,6 +5,8 @@ import uuid
 import socket
 
 class Runtime:
+  User_Agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+
   @classmethod
   def run(cls,code):
     exec(code,globals())
@@ -12,7 +14,7 @@ class Runtime:
   @classmethod
   def get(cls,url):
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'User-Agent': cls.User_Agent
     }
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req) as response:
@@ -27,7 +29,7 @@ class GitHub:
     path = path.split("|")
     url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb=uuid.uuid4().hex"
     req = urllib.request.Request(url)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+    req.add_header('User-Agent', Runtime.User_Agent)
     try:
         with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode('utf-8'))
