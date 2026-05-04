@@ -79,9 +79,10 @@ class GitHub:
       result = cls.getFileFromAPI(path)
       if result.status != 403:
         return result
-      return cls.getFileFromRAW(path)
+      new_result = cls.getFileFromRAW(path)
+      new_result.previousStatus = result.status
+      return new_result
     except Exception as e:
-      print(e)
       return cls.getFileFromRAW(path)
 
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py").content)
