@@ -23,12 +23,10 @@ class GitHub:
   api_access = "Unknown"
 
   @classmethod
-  def force_ipv4(cls):
-    old_getaddrinfo = socket.getaddrinfo
-    def new_getaddrinfo(*args, **kwargs):
-        res = old_getaddrinfo(*args, **kwargs)
-        return [r for r in res if r[0] == socket.AF_INET]
-    socket.getaddrinfo = new_getaddrinfo
+  def speedup(cls):
+    def getaddrinfo_ipv4(host, port, family=0, type=0, proto=0, flags=0):
+        return socket.getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+    socket.getaddrinfo = getaddrinfo_ipv4
 
   @classmethod
   def getFileFromAPI(cls,path):
@@ -53,7 +51,7 @@ class GitHub:
     
   @classmethod
   def getFile(cls,path):
-    cls.force_ipv4()
+    cls.speedup()
     if cls.api_access == "Restricted":
       return cls.getFileFromRAW(path)
     else:
@@ -62,5 +60,5 @@ class GitHub:
       except Exception as e:
         return cls.getFileFromRAW(path)
 
-print("ver 0.98e")
+print("ver 0.98f")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
