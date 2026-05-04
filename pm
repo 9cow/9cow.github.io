@@ -3,6 +3,15 @@ import json
 import base64
 import uuid
 
+class Runtime
+  @classmethod
+  def run(code):
+    exec(code,globals())
+
+  @classmethod
+  def get(url):
+    return urllib.request.urlopen(url).read().decode('utf-8')
+
 class GitHub:
   api_access = "Unknown"
 
@@ -25,8 +34,7 @@ class GitHub:
   @classmethod
   def getFileFromRAW(cls,path):
     path = path.split("|")
-    url = f"https://raw.githubusercontent.com/{path[0]}/{path[1]}/refs/heads/main/{path[2]}?nocache=uuid.uuid4().hex"
-    return urllib.request.urlopen(url).read().decode('utf-8')
+    return Runtime.get(f"https://raw.githubusercontent.com/{path[0]}/{path[1]}/refs/heads/main/{path[2]}?nocache=uuid.uuid4().hex")
     
   @classmethod
   def getFile(cls,path):
@@ -35,4 +43,4 @@ class GitHub:
     except Exception as e:
       return cls.getFileFromRAW(path)
 
-exec(GitHub.getFile("db0bc|pm|pm.py"), globals())
+Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
