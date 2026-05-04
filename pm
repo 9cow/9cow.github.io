@@ -34,4 +34,5 @@ class u:
     except Exception as e:
       return getFile_GitHubRAW(path)
 
+print("LLOOO")
 exec(u.readGithubFile("db0bc|pm|pm"))
