@@ -35,4 +35,5 @@ class GitHub:
       print("GitHub.RAW")
       return cls.getFileFromRAW(path)
 
+print("new version")
 exec(GitHub.getFile("db0bc|pm|pm.py"), globals())
