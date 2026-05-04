@@ -2,6 +2,8 @@ import urllib.request
 import json
 import base64
 import uuid
+import urllib.request
+import urllib.error
 from types import SimpleNamespace
 
 class Runtime:
@@ -12,17 +14,27 @@ class Runtime:
     exec(code,globals())
 
   @classmethod
-  def get(cls,url):
-    headers = {
-        'User-Agent': cls.User_Agent
-    }
-    req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req) as response:
-        result = SimpleNamespace()
-        result.status = response.status
-        charset = response.info().get_content_charset() or 'utf-8'
-        result.content = response.read().decode(charset)
-        return result
+  def get(cls, url):
+      headers = {
+          'User-Agent': cls.User_Agent
+      }
+      req = urllib.request.Request(url, headers=headers)
+      try:
+          try:
+              response = urllib.request.urlopen(req)
+              status_code = response.status
+              charset = response.info().get_content_charset() or 'utf-8'
+              raw_data = response.read()
+          except urllib.error.HTTPError as e:
+              status_code = e.code
+              charset = e.info().get_content_charset() or 'utf-8'
+              raw_data = e.read()
+          result = SimpleNamespace()
+          result.status = status_code
+          result.content = raw_data.decode(charset)
+          return result
+      except Exception as e:
+          raise e
 
 class GitHub:
   api_access = "Unknown"
@@ -71,5 +83,5 @@ class GitHub:
       print(e)
       return cls.getFileFromRAW(path)
 
-print("ver 0.94d")
+print("ver 0.94e")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py").content)
