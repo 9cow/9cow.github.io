@@ -24,7 +24,7 @@ class GitHub:
   def getFileFromRAW(cls,path):
     path = path.split("|")
     url = f"https://raw.githubusercontent.com/{path[0]}/{path[1]}/refs/heads/main/{path[2]}?nocache=uuid.uuid4().hex"
-    return urllib.request.urlopen(url).read()
+    return urllib.request.urlopen(url).read().decode('utf-8')
     
   @classmethod
   def getFile(cls,path):
