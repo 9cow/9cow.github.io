@@ -9,7 +9,7 @@ class GitHub:
     path = path.split("|")
     url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb=uuid.uuid4().hex"
     req = urllib.request.Request(url)
-    req.add_header('User-Agent', 'Python-Urllib-Bot')
+    req.add_header('User-Agent', 'Python-Urllib-db0bc')
     try:
         with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode('utf-8'))
