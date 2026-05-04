@@ -7,8 +7,7 @@ class u:
   @classmethod
   GithubAPI(cls,path):
     path = path.split("|")
-    cache_buster = uuid.uuid4().hex
-    url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref=main&cb={cache_buster}"
+    url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb=uuid.uuid4().hex"
     req = urllib.request.Request(url)
     req.add_header('User-Agent', 'Python-Urllib-Bot')
     try:
