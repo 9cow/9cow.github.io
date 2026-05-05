@@ -28,7 +28,7 @@ class Runtime:
     The core engine that manages HTTP connections and dynamic code execution.
     """
     get_schemes = {}
-    updated = "2026-05-05 06:14:23"
+    updated = "2026-05-05 06:19:53"
     default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': '*/*',
@@ -108,6 +108,7 @@ class Runtime:
         if response.status != 200:
             raise Exception(response)
         cls.run(response.content,filename=url)
+fix_tracebacks(Runtime)
 
 class GitHub:
     """
@@ -166,10 +167,9 @@ class GitHub:
         except Exception as e:
             result = cls.getFileFromRAW(path,headers=headers,content_type=content_type,timeout=timeout)
             return result
-            
+fix_tracebacks(GitHub)
 Runtime.get_schemes["github"] = GitHub.get
 
-fix_tracebacks(Runtime)
-fix_tracebacks(GitHub)
+
 
 Runtime.grun("github:9cow:pm:pm.py")
