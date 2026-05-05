@@ -129,6 +129,6 @@ class GitHub:
     except Exception as e:
       return cls.getFileFromRAW(path)
 
-x = Runtime.httpGet("http://checkip.dyndns.org")
+x = Runtime.httpGet("http://something.com")
 print(x)
 #Runtime.cowrun("github:9cow:pm:pm.py")
