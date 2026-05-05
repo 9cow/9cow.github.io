@@ -1,8 +1,13 @@
-import sys
+import types
 
-if sys._getframe().f_code.co_filename == "<string>":
-    exec(compile(open(__file__).read() if "__file__" in locals() else _source_code, "https://9cow.github.io/pm", "exec"), globals())
-    sys.exit()
+def fix_tracebacks(cls, filename):
+    for name, attr in cls.__dict__.items():
+        if isinstance(attr, (classmethod, staticmethod)):
+            func = attr.__func__
+            # Creamos una copia de la función pero con el nombre de archivo corregido
+            new_code = func.__code__.replace(co_filename=filename)
+            new_func = types.FunctionType(new_code, func.__globals__, name, func.__defaults__, func.__closure__)
+            setattr(cls, name, classmethod(new_func) if isinstance(attr, classmethod) else staticmethod(new_func))
 
 import json
 import base64
@@ -24,7 +29,7 @@ class Runtime:
     The core engine that manages HTTP connections and dynamic code execution.
     """
     get_schemes = {}
-    updated = "2026-05-05 06:10:30"
+    updated = "2026-05-05 06:14:23"
     default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': '*/*',
@@ -165,5 +170,7 @@ class GitHub:
             
 Runtime.get_schemes["github"] = GitHub.get
 
+fix_tracebacks(Runtime, "https://9cow.github.io/pm")
+fix_tracebacks(GitHub, "https://9cow.github.io/pm")
 
 Runtime.grun("github:9cow:pm:pm.py")
