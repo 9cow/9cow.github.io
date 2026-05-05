@@ -72,6 +72,17 @@ class Runtime:
             return func(url,headers=headers,content_type=content_type)
         return cls.httpGet(url,headers=headers,content_type=content_type)
 
+    @classmethod
+    def run(cls,code):
+        exec(code,globals())
+
+    @classmethod
+    def grun(cls,url,headers=None):
+        response = cls.get(url,headers=headers)
+        if response.status != 200:
+            raise Exception(response)
+        cls.run(response.content)
+
 class GitHub:
     api_access = "unknown"
     
