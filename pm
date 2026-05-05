@@ -26,13 +26,13 @@ class Runtime:
         }
 
     @classmethod
-    def httpGet(cls, url, headers=None, content_type=ContentTypeEnum.TEXT):
+    def httpGet(cls, url, headers=None, content_type=ContentTypeEnum.TEXT,timeout=10):
         if headers is None:
             headers = cls.default_headers.copy()        
         req = urllib.request.Request(url, headers=headers)
         try:
             try:
-                with urllib.request.urlopen(req) as response:
+                with urllib.request.urlopen(req,timeout=timeout) as response:
                     status_code = response.status
                     info = response.info()
                     raw_data = response.read()
@@ -65,12 +65,12 @@ class Runtime:
             raise e
 
     @classmethod
-    def get(cls, url, headers=None, content_type=ContentTypeEnum.TEXT):
+    def get(cls, url, headers=None, content_type=ContentTypeEnum.TEXT,timeout=10):
         scheme,_,_ = url.partition(":")
         if scheme in cls.get_schemes:
             func = cls.get_schemes[scheme]
-            return func(url,headers=headers,content_type=content_type)
-        return cls.httpGet(url,headers=headers,content_type=content_type)
+            return func(url,headers=headers,content_type=content_type,timeout=timeout)
+        return cls.httpGet(url,headers=headers,content_type=content_type,timeout=timeout)
 
     @classmethod
     def run(cls,code):
@@ -87,9 +87,9 @@ class GitHub:
     api_access = "unknown"
     
     @classmethod
-    def getFileFromAPI(cls, path, headers=None,content_type=ContentTypeEnum.TEXT):
+    def getFileFromAPI(cls, path, headers=None,content_type=ContentTypeEnum.TEXT,timeout=10):
         path = path.split(":")
-        response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",headers=headers,content_type=ContentTypeEnum.JSON)
+        response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",headers=headers,content_type=ContentTypeEnum.JSON,timeout=timeout)
         result = SimpleNamespace()
         result.driver = "GitHub.getFileFromAPI"
         result.content_type = content_type
@@ -112,21 +112,21 @@ class GitHub:
         return result
 
     @classmethod
-    def getFileFromRAW(cls,path,headers=None,content_type=ContentTypeEnum.TEXT):
+    def getFileFromRAW(cls,path,headers=None,content_type=ContentTypeEnum.TEXT,timeout=10):
         path = path.split(":")
-        response = Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache={uuid.uuid4().hex}",headers=headers,content_type=content_type)
+        response = Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache={uuid.uuid4().hex}",headers=headers,content_type=content_type,timeout=timeout)
         response.driver = "GitHub.getFileFromRAW"
         return response
 
     @classmethod
-    def get(cls,path,headers=None,content_type=ContentTypeEnum.TEXT):
+    def get(cls,path,headers=None,content_type=ContentTypeEnum.TEXT,timeout=10):
         try:
-            result = cls.getFileFromAPI(path,headers=headers,content_type=content_type)
+            result = cls.getFileFromAPI(path,headers=headers,content_type=content_type,timeout=timeout)
             if result.status != 200:
-                result = cls.getFileFromRAW(path,headers=headers,content_type=content_type)
+                result = cls.getFileFromRAW(path,headers=headers,content_type=content_type,timeout=timeout)
             return result
         except Exception as e:
-            result = cls.getFileFromRAW(path,headers=headers,content_type=content_type)
+            result = cls.getFileFromRAW(path,headers=headers,content_type=content_type,timeout=timeout)
             return result
             
 Runtime.get_schemes["github"] = GitHub.get
