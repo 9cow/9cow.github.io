@@ -47,7 +47,6 @@ class Runtime:
           result = SimpleNamespace()
           result.content_type = content_type
           result.status = status_code
-          result.type = content_type
           if content_type == ContentTypeEnum.BINARY:
               result.content = raw_data
           elif content_type == ContentTypeEnum.NONE:
