@@ -111,13 +111,16 @@ class GitHub:
         response.driver = "GitHub.getFileFromRAW"
         return response
 
+    @classmethod
+    def get(cls,path,headers=None,content_type=ContentTypeEnum.TEXT):
+        try:
+            result = cls.getFileFromAPI((path,headers=headers,content_type=content_type)
+            if result.status != 200:
+                result = cls.getFileFromRAW(path,headers=headers,content_type=content_type)
+            return result
+        except Exception as e:
+            result = cls.getFileFromRAW(path,headers=headers,content_type=content_type)
+            return result
 
-x = Runtime.httpGet("http://something.com")
+x = GitHub.get("github:9cow:pm:pm.help")
 print(x)
-print(".............")
-x = GitHub.getFileFromAPI("github:9cow:pm:pm.help")
-print(x)
-print(".............")
-x = GitHub.getFileFromRAW("github:9cow:pm:pm.help")
-print(x)
-print(".............")
