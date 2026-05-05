@@ -85,7 +85,7 @@ class GitHub:
         result.status = response.status
         result.content = None
         if content_type != ContentTypeEnum.NONE:
-            raw_data = base64.b64decode(result.content.get('content', ''))
+            raw_data = base64.b64decode(response.content.get('content', ''))
             if content_type == ContentTypeEnum.BINARY:
                 result.content = raw_data
             else:
