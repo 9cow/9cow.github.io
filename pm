@@ -21,7 +21,6 @@ class ContentTypeEnum(Enum):
     TEXT = auto()
     JSON = auto()
     BINARY = auto()
-    FAILED = auto()
 
 class Runtime:
     """
