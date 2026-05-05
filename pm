@@ -15,52 +15,54 @@ class ContentTypeEnum(Enum):
     FAILED = auto()
 
 class Runtime:
-  """
-  Manages common methods
-  """
-  get_extensions = {}
-  updated = "2026-05-04 20:58:01"
-  default_headers = {
+    """
+    Manages common methods
+    """
+    get_extensions = {}
+    updated = "2026-05-04 20:58:01"
+    default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': '*/*',
         'Connection': 'keep-alive'
-    }
+        }
 
-  @classmethod
-  def httpGet(cls, url, headers=None,content_type=ContentTypeEnum.TEXT):
-      """
-      Gets content from a http/https url
-      """
-      if headers == None:
-        headers = cls.default_headers.copy()
-      req = urllib.request.Request(url, headers=headers)
-      try:
-          try:
-              with urllib.request.urlopen(req) as response:
-                  status_code = response.status
-                  info = response.info()
-                  raw_data = response.read()
-          except urllib.error.HTTPError as e:
-              status_code = e.code
-              info = e.info()
-              raw_data = e.read()
-          result = SimpleNamespace()
-          result.content_type = content_type
-          result.status = status_code
-          if content_type == ContentTypeEnum.BINARY:
-              result.content = raw_data
-          elif content_type == ContentTypeEnum.NONE:
-              result.content = None
-          else:
-              charset = info.get_content_charset() or 'utf-8'
-              text_content = raw_data.decode(charset)
-              if content_type == ContentTypeEnum.JSON:
-                  result.content = json.loads(text_content)
-              else:
-                  result.content = text_content
-          return result
-      except Exception as e:
-          raise e
+    @classmethod
+    def httpGet(cls, url, headers=None, content_type=ContentTypeEnum.TEXT):
+        if headers is None:
+            headers = cls.default_headers.copy()        
+        req = urllib.request.Request(url, headers=headers)
+        try:
+            try:
+                with urllib.request.urlopen(req) as response:
+                    status_code = response.status
+                    info = response.info()
+                    raw_data = response.read()
+            except urllib.error.HTTPError as e:
+                status_code = e.code
+                info = e.info()
+                raw_data = e.read()
+            result = SimpleNamespace()
+            result.content_type = content_type
+            result.status = status_code
+            if content_type == ContentTypeEnum.BINARY:
+                result.content = raw_data
+            elif content_type == ContentTypeEnum.NONE:
+                result.content = None
+            else:
+                try:
+                    charset = info.get_content_charset() or 'utf-8'
+                    text_content = raw_data.decode(charset)
+                    if content_type == ContentTypeEnum.JSON:
+                        result.content = json.loads(text_content)
+                    else:
+                        result.content = text_content
+                except Exception:
+                    result.content_type = ContentTypeEnum.BINARY
+                    result.content = raw_data
+                    return result
+            return result
+        except Exception as e:
+            raise e
 
 class GitHub:
   """
