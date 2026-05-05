@@ -28,7 +28,7 @@ class Runtime:
     The core engine that manages HTTP connections and dynamic code execution.
     """
     uri_schemes = {}
-    updated = "2026-05-05 06:36:39"
+    updated = "2026-05-05 06:55:39"
     default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': '*/*',
@@ -119,10 +119,12 @@ class GitHub:
     Uses the GitHub REST API to fetch a file. Since the API returns content encoded in Base64, this method decodes it and checks for rate-limiting (403 status) to update the api_access state.
         """
         path = path.split(":")
-        response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",headers=headers,content_type=ContentTypeEnum.JSON,timeout=timeout)
         result = SimpleNamespace()
         result.driver = "GitHub.getFileFromAPI"
         result.content_type = content_type
+        response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",headers=headers,content_type=ContentTypeEnum.JSON,timeout=timeout)
+        if response.status == 404:
+            response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=master&cb={uuid.uuid4().hex}",headers=headers,content_type=ContentTypeEnum.JSON,timeout=timeout)        
         result.status = response.status
         if result.status != 403:
             cls.api_access = "yes"
@@ -148,6 +150,8 @@ class GitHub:
         """
         path = path.split(":")
         response = Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache={uuid.uuid4().hex}",headers=headers,content_type=content_type,timeout=timeout)
+        if response.status == 404:
+            response = Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/master/{path[3]}?nocache={uuid.uuid4().hex}",headers=headers,content_type=content_type,timeout=timeout)    
         response.driver = "GitHub.getFileFromRAW"
         return response
 
