@@ -18,7 +18,7 @@ class Runtime:
     """
     Manages common methods
     """
-    get_extensions = {}
+    get_schemes = {}
     updated = "2026-05-04 20:58:01"
     default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -65,18 +65,19 @@ class Runtime:
         except Exception as e:
             raise e
 
+    @classmethod
+    def get(cls, url, headers=None, content_type=ContentTypeEnum.TEXT):
+        scheme,_,_ = url.partition(":")
+        if scheme in cls.get_schemes:
+            func = cls.get_schemes[scheme]
+            return func(url,headers=headers,content_type=content_type)
+        return cls.httpGet(url,headers=headers,content_type=content_type))
+
 class GitHub:
-    """
-    Manages GitHub file access
-    """
     api_access = "unknown"
     
     @classmethod
     def getFileFromAPI(cls, path, headers=None,content_type=ContentTypeEnum.TEXT):
-        """
-        Retrives a file from github using GitHub API
-        path must be "$user|$repo|$path"
-        """
         path = path.split(":")
         response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",headers=headers,content_type=ContentTypeEnum.JSON)
         result = SimpleNamespace()
@@ -102,10 +103,6 @@ class GitHub:
 
     @classmethod
     def getFileFromRAW(cls,path,headers=None,content_type=ContentTypeEnum.TEXT):
-        """
-        Retrives a file from github using GitHub Raw Access
-        path must be "$user|$repo|$path"
-        """
         path = path.split(":")
         response = Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache={uuid.uuid4().hex}",headers=headers,content_type=content_type)
         response.driver = "GitHub.getFileFromRAW"
@@ -122,5 +119,7 @@ class GitHub:
             result = cls.getFileFromRAW(path,headers=headers,content_type=content_type)
             return result
 
-x = GitHub.get("github:9cow:pm:pm.help")
+print("Check!")
+Runtime.get_schemes["github"] = GitHub.get
+x = Runtime.get("github:9cow:pm:pm.help")
 print(x)
