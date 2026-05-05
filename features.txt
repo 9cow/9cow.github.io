@@ -1,0 +1,5 @@
++ work from a single python command (SPC)
++ can install it using that same SPC
++ the starting point must be a .py, and not a project structure
++ be agnostic as to where the code is hosted (local, http, https, github)
++ have a mechanism to integrate custom scheme handlers
