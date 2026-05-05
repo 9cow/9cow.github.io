@@ -83,7 +83,10 @@ class GitHub:
         result.driver = "GitHub.getFileFromAPI"
         result.content_type = content_type
         result.status = response.status
-        result.content = response.content
+        result.content = None
+        raw_data = base64.b64decode(data.get('content', ''))
+        result.content = raw_data
+            
         return result
 
     @classmethod
