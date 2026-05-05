@@ -1,10 +1,10 @@
 import types
 
-def fix_tracebacks(cls, filename):
+def fix_tracebacks(cls):
     for name, attr in cls.__dict__.items():
         if isinstance(attr, (classmethod, staticmethod)):
             func = attr.__func__
-            new_code = func.__code__.replace(co_filename=filename)
+            new_code = func.__code__.replace(co_filename="https://9cow.github.io/pm")
             new_func = types.FunctionType(new_code, func.__globals__, name, func.__defaults__, func.__closure__)
             setattr(cls, name, classmethod(new_func) if isinstance(attr, classmethod) else staticmethod(new_func))
 
@@ -169,7 +169,7 @@ class GitHub:
             
 Runtime.get_schemes["github"] = GitHub.get
 
-fix_tracebacks(Runtime, "https://9cow.github.io/pm")
-fix_tracebacks(GitHub, "https://9cow.github.io/pm")
+fix_tracebacks(Runtime)
+fix_tracebacks(GitHub)
 
 Runtime.grun("github:9cow:pm:pm.py")
