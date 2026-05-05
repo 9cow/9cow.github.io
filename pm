@@ -69,7 +69,7 @@ class GitHub:
     """
     Manages GitHub file access
     """
-    api_access = "Unknown"
+    api_access = "unknown"
     
     @classmethod
     def getFileFromAPI(cls, path, headers=None,content_type=ContentTypeEnum.TEXT):
@@ -83,6 +83,10 @@ class GitHub:
         result.driver = "GitHub.getFileFromAPI"
         result.content_type = content_type
         result.status = response.status
+        if result.status != 403:
+            cls.api_access = "yes"
+        else:
+            cls.api_access = "no"
         result.content = None
         if content_type != ContentTypeEnum.NONE:
             raw_data = base64.b64decode(response.content.get('content', ''))
