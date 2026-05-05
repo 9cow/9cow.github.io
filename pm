@@ -71,7 +71,7 @@ class Runtime:
         if scheme in cls.get_schemes:
             func = cls.get_schemes[scheme]
             return func(url,headers=headers,content_type=content_type)
-        return cls.httpGet(url,headers=headers,content_type=content_type))
+        return cls.httpGet(url,headers=headers,content_type=content_type)
 
 class GitHub:
     api_access = "unknown"
