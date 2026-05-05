@@ -86,31 +86,16 @@ class GitHub:
         result.content = response.content
         return result
 
-  @classmethod
-  def getFileFromRAW(cls,path,headers=None,content_type=ContentTypeEnum.TEXT):
-    """
-    Retrives a file from github using GitHub Raw Access
-    path must be "$user|$repo|$path"
-    """
-    path = path.split(":")
-    return Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache=uuid.uuid4().hex",headers=headers,content_type=content_type)
-    
-  @classmethod
-  def getFile(cls,path):
-    """
-    Tries to retrieve a file from GitHub using GitHub API
-    If it cannot use the API, it will use GitHub RAW access
-    path must be "$user|$repo|$path"
-    """
-    try:
-      result = cls.getFileFromAPI(path)
-      if result.status != 403:
-        return result
-      new_result = cls.getFileFromRAW(path)
-      new_result.previousStatus = result.status
-      return new_result
-    except Exception as e:
-      return cls.getFileFromRAW(path)
+    @classmethod
+    def getFileFromRAW(cls,path,headers=None,content_type=ContentTypeEnum.TEXT):
+        """
+        Retrives a file from github using GitHub Raw Access
+        path must be "$user|$repo|$path"
+        """
+        path = path.split(":")
+        return Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache=uuid.uuid4().hex",headers=headers,content_type=content_type)
+        
+
 
 x = Runtime.httpGet("http://something.com")
 print(x)
