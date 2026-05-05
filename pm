@@ -1,3 +1,9 @@
+import sys
+
+if sys._getframe().f_code.co_filename == "<string>":
+    exec(compile(open(__file__).read() if "__file__" in locals() else _source_code, "https://9cow.github.io/pm", "exec"), globals())
+    sys.exit()
+
 import json
 import base64
 import uuid
@@ -18,7 +24,7 @@ class Runtime:
     The core engine that manages HTTP connections and dynamic code execution.
     """
     get_schemes = {}
-    updated = "2026-05-05 06:00:00"
+    updated = "2026-05-05 06:10:30"
     default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': '*/*',
