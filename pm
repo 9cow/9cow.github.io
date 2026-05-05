@@ -100,6 +100,10 @@ class GitHub:
 
 x = Runtime.httpGet("http://something.com")
 print(x)
+print(".............")
 x = GitHub.getFileFromAPI("github:9cow:pm:pm.help")
 print(x)
-#Runtime.cowrun("github:9cow:pm:pm.py")
+print(".............")
+x = GitHub.getFileFromRAW("github:9cow:pm:pm.help")
+print(x)
+print(".............")
