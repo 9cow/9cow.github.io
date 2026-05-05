@@ -27,8 +27,8 @@ class Runtime:
     """
     The core engine that manages HTTP connections and dynamic code execution.
     """
-    get_schemes = {}
-    updated = "2026-05-05 06:19:53"
+    uri_schemes = {}
+    updated = "2026-05-05 06:36:39"
     default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': '*/*',
@@ -83,8 +83,8 @@ class Runtime:
     A routing method. It checks the URL scheme (e.g., github:). If the scheme is registered in get_schemes, it redirects the task to the specific handler; otherwise, it performs a standard httpGet.
         """
         scheme,_,_ = url.partition(":")
-        if scheme in cls.get_schemes:
-            func = cls.get_schemes[scheme]
+        if scheme in cls.uri_schemes:
+            func = cls.uri_schemes[scheme]
             return func(url,headers=headers,content_type=content_type,timeout=timeout)
         return cls.httpGet(url,headers=headers,content_type=content_type,timeout=timeout)
 
@@ -164,9 +164,7 @@ class GitHub:
         except Exception as e:
             result = cls.getFileFromRAW(path,headers=headers,content_type=content_type,timeout=timeout)
             return result
+Runtime.uri_schemes["github"] = GitHub.get
 fix_tracebacks(GitHub)
-Runtime.get_schemes["github"] = GitHub.get
-
-
 
 Runtime.grun("github:9cow:pm:pm.py")
