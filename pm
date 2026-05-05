@@ -93,11 +93,8 @@ class Runtime:
         """
     Executes a string of Python code within the global namespace using exec().
         """
-        try:
-            byte_code = compile(code, filename, 'exec')
-            exec(byte_code, globals())
-        except Exception as e:
-            raise e
+        byte_code = compile(code, filename, 'exec')
+        exec(byte_code, globals())
         
     @classmethod
     def grun(cls,url,headers=None):
