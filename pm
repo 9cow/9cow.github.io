@@ -72,13 +72,13 @@ class GitHub:
     api_access = "Unknown"
     
     @classmethod
-    def getFileFromAPI(cls, path, content_type=ContentTypeEnum.TEXT):
+    def getFileFromAPI(cls, path, headers=None,content_type=ContentTypeEnum.TEXT):
         """
         Retrives a file from github using GitHub API
         path must be "$user|$repo|$path"
         """
         path = path.split(":")
-        response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",content_type=ContentTypeEnum.JSON)
+        response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",headers=headers,content_type=ContentTypeEnum.JSON)
         result = SimpleNamespace()
         result.driver = "GitHub.getFileFromAPI"
         result.content_type = content_type
@@ -87,13 +87,13 @@ class GitHub:
         return result
 
   @classmethod
-  def getFileFromRAW(cls,path):
+  def getFileFromRAW(cls,path,headers=None,content_type=ContentTypeEnum.TEXT):
     """
     Retrives a file from github using GitHub Raw Access
     path must be "$user|$repo|$path"
     """
-    path = path.split("|")
-    return Runtime.get(f"https://raw.githubusercontent.com/{path[0]}/{path[1]}/refs/heads/main/{path[2]}?nocache=uuid.uuid4().hex")
+    path = path.split(":")
+    return Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache=uuid.uuid4().hex",headers=headers,content_type=content_type)
     
   @classmethod
   def getFile(cls,path):
