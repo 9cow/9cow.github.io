@@ -42,6 +42,7 @@ class Runtime:
                 info = e.info()
                 raw_data = e.read()
             result = SimpleNamespace()
+            result.driver = "Runtime.httpGet"
             result.content_type = content_type
             result.status = status_code
             if content_type == ContentTypeEnum.BINARY:
@@ -65,43 +66,25 @@ class Runtime:
             raise e
 
 class GitHub:
-  """
-  Manages GitHub file access
-  """
-  api_access = "Unknown"
-
-  @classmethod
-  def getFileFromAPI(cls, path, content_type=ContentTypeEnum.TEXT):
-      """
-      Retrives a file from github using GitHub API
-      path must be "$user|$repo|$path"
-      """
-      path = path.split(":")
-      request = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",content_type=ContentTypeEnum.JSON)
-      if request.status == 200:  
-          pass
-      try:
-          try:
-              response = urllib.request.urlopen(req)
-              status_code = response.status
-              raw_payload = response.read()
-          except urllib.error.HTTPError as e:
-              status_code = e.code
-              raw_payload = e.read()
-          result = SimpleNamespace()
-          result.status = status_code
-          if status_code == 200:
-              data = json.loads(raw_payload.decode('utf-8'))
-              content_b64 = data.get('content', '')
-              result.content = base64.b64decode(content_b64).decode('utf-8')
-              cls.api_access = "Allowed"
-          else:
-              result.content = raw_payload.decode('utf-8')
-              cls.api_access = "Restricted"
-          return result
-      except Exception as e:
-          cls.api_access = "Restricted"
-          raise e
+    """
+    Manages GitHub file access
+    """
+    api_access = "Unknown"
+    
+    @classmethod
+    def getFileFromAPI(cls, path, content_type=ContentTypeEnum.TEXT):
+        """
+        Retrives a file from github using GitHub API
+        path must be "$user|$repo|$path"
+        """
+        path = path.split(":")
+        response = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",content_type=ContentTypeEnum.JSON)
+        result = SimpleNamespace()
+        result.driver = "GitHub.getFileFromAPI"
+        result.content_type = content_type
+        result.status = response.status
+        result.content = response.content
+        return result
 
   @classmethod
   def getFileFromRAW(cls,path):
@@ -130,5 +113,7 @@ class GitHub:
       return cls.getFileFromRAW(path)
 
 x = Runtime.httpGet("http://something.com")
+print(x)
+x = GitHub.getFileFromAPI("github:9cow:pm:pm.help")
 print(x)
 #Runtime.cowrun("github:9cow:pm:pm.py")
