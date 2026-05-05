@@ -5,43 +5,59 @@ import uuid
 import urllib.request
 import urllib.error
 from types import SimpleNamespace
+from enum import Enum, auto
+
+class ContentTypeEnum(Enum):
+    NONE = auto()
+    UTF_8 = auto()
+    JSON = auto()
+    BINARY = auto()
+    FAILED = auto()
 
 class Runtime:
   """
   Manages common methods
   """
-  updated = "2026-05-04 14:54:01"
-  User_Agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  get_extensions = {}
+  updated = "2026-05-04 20:58:01"
+  default_headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': '*/*',
+        'Connection': 'keep-alive'
+    }
 
   @classmethod
-  def run(cls,code):
-    """
-    Runs code from a string
-    """
-    exec(code,globals())
-
-  @classmethod
-  def get(cls, url):
+  def httpGet(cls, url, headers=None,content_type=ContentTypeEnum.UTF_8):
       """
       Gets content from a http/https url
       """
-      headers = {
-          'User-Agent': cls.User_Agent
-      }
+      if headers == None:
+        headers = cls.default_headers.copy()
       req = urllib.request.Request(url, headers=headers)
       try:
           try:
-              response = urllib.request.urlopen(req)
-              status_code = response.status
-              charset = response.info().get_content_charset() or 'utf-8'
-              raw_data = response.read()
+              with urllib.request.urlopen(req) as response:
+                  status_code = response.status
+                  info = response.info()
+                  raw_data = response.read()
           except urllib.error.HTTPError as e:
               status_code = e.code
-              charset = e.info().get_content_charset() or 'utf-8'
+              info = e.info()
               raw_data = e.read()
           result = SimpleNamespace()
           result.status = status_code
-          result.content = raw_data.decode(charset)
+          result.type = content_type
+          if content_type == ContentTypeEnum.BINARY:
+              result.content = raw_data
+          elif content_type == ContentTypeEnum.NONE:
+              result.content = None
+          else:
+              charset = info.get_content_charset() or 'utf-8'
+              text_content = raw_data.decode(charset)
+              if content_type == ContentTypeEnum.JSON:
+                  result.content = json.loads(text_content)
+              else:
+                  result.content = text_content
           return result
       except Exception as e:
           raise e
@@ -61,7 +77,7 @@ class GitHub:
       path = path.split("|")
       url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb={uuid.uuid4().hex}"
       req = urllib.request.Request(url)
-      req.add_header('User-Agent', Runtime.User_Agent)
+      req.add_header('User-Agent', Runtime.user_agent)
       try:
           try:
               response = urllib.request.urlopen(req)
@@ -111,4 +127,6 @@ class GitHub:
     except Exception as e:
       return cls.getFileFromRAW(path)
 
-Runtime.run(GitHub.getFile("9cow|pm|pm.py").content)
+x = Runtime.httpGet("http://checkip.dyndns.org")
+print(x)
+#Runtime.cowrun("github:9cow:pm:pm.py")
