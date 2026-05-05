@@ -103,7 +103,7 @@ class GitHub:
         path must be "$user|$repo|$path"
         """
         path = path.split(":")
-        response = Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache=uuid.uuid4().hex",headers=headers,content_type=content_type)
+        response = Runtime.httpGet(f"https://raw.githubusercontent.com/{path[1]}/{path[2]}/refs/heads/main/{path[3]}?nocache={uuid.uuid4().hex}",headers=headers,content_type=content_type)
         response.driver = "GitHub.getFileFromRAW"
         return response
 
