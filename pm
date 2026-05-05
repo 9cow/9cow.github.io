@@ -118,8 +118,10 @@ class GitHub:
         except Exception as e:
             result = cls.getFileFromRAW(path,headers=headers,content_type=content_type)
             return result
+            
+Runtime.get_schemes["github"] = GitHub.get
 
 print("Check!")
-Runtime.get_schemes["github"] = GitHub.get
+
 x = Runtime.get("github:9cow:pm:pm.help")
 print(x)
