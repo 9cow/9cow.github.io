@@ -4,7 +4,6 @@ def fix_tracebacks(cls, filename):
     for name, attr in cls.__dict__.items():
         if isinstance(attr, (classmethod, staticmethod)):
             func = attr.__func__
-            # Creamos una copia de la función pero con el nombre de archivo corregido
             new_code = func.__code__.replace(co_filename=filename)
             new_func = types.FunctionType(new_code, func.__globals__, name, func.__defaults__, func.__closure__)
             setattr(cls, name, classmethod(new_func) if isinstance(attr, classmethod) else staticmethod(new_func))
