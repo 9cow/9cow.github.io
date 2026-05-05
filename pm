@@ -9,7 +9,7 @@ from enum import Enum, auto
 
 class ContentTypeEnum(Enum):
     NONE = auto()
-    UTF_8 = auto()
+    TEXT = auto()
     JSON = auto()
     BINARY = auto()
     FAILED = auto()
@@ -27,7 +27,7 @@ class Runtime:
     }
 
   @classmethod
-  def httpGet(cls, url, headers=None,content_type=ContentTypeEnum.UTF_8):
+  def httpGet(cls, url, headers=None,content_type=ContentTypeEnum.TEXT):
       """
       Gets content from a http/https url
       """
@@ -45,6 +45,7 @@ class Runtime:
               info = e.info()
               raw_data = e.read()
           result = SimpleNamespace()
+          result.content_type = content_type
           result.status = status_code
           result.type = content_type
           if content_type == ContentTypeEnum.BINARY:
@@ -69,15 +70,15 @@ class GitHub:
   api_access = "Unknown"
 
   @classmethod
-  def getFileFromAPI(cls, path):
+  def getFileFromAPI(cls, path, content_type=ContentTypeEnum.TEXT):
       """
       Retrives a file from github using GitHub API
       path must be "$user|$repo|$path"
       """
-      path = path.split("|")
-      url = f"https://api.github.com/repos/{path[0]}/{path[1]}/contents/{path[2]}?ref=main&cb={uuid.uuid4().hex}"
-      req = urllib.request.Request(url)
-      req.add_header('User-Agent', Runtime.user_agent)
+      path = path.split(":")
+      request = Runtime.httpGet(f"https://api.github.com/repos/{path[1]}/{path[2]}/contents/{path[3]}?ref=main&cb={uuid.uuid4().hex}",content_type=ContentTypeEnum.JSON)
+      if request.status == 200:  
+          pass
       try:
           try:
               response = urllib.request.urlopen(req)
