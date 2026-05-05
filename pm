@@ -18,7 +18,7 @@ class Runtime:
     The core engine that manages HTTP connections and dynamic code execution.
     """
     get_schemes = {}
-    updated = "2026-05-05 05:43:45"
+    updated = "2026-05-05 05:53:01"
     default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': '*/*',
@@ -79,10 +79,12 @@ class Runtime:
         return cls.httpGet(url,headers=headers,content_type=content_type,timeout=timeout)
 
     @classmethod
-    def run(cls,code):
+    def run(cls,code, filename=""):
         """
     Executes a string of Python code within the global namespace using exec().
         """
+        byte_code = compile(code, filename, 'exec')
+        exec(byte_code, globals())
         exec(code,globals())
 
     @classmethod
@@ -93,7 +95,7 @@ class Runtime:
         response = cls.get(url,headers=headers)
         if response.status != 200:
             raise Exception(response)
-        cls.run(response.content)
+        cls.run(response.content,filename=url)
 
 class GitHub:
     """
