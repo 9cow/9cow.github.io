@@ -114,7 +114,7 @@ class GitHub:
     @classmethod
     def get(cls,path,headers=None,content_type=ContentTypeEnum.TEXT):
         try:
-            result = cls.getFileFromAPI((path,headers=headers,content_type=content_type)
+            result = cls.getFileFromAPI(path,headers=headers,content_type=content_type)
             if result.status != 200:
                 result = cls.getFileFromRAW(path,headers=headers,content_type=content_type)
             return result
