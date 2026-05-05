@@ -121,7 +121,6 @@ class GitHub:
             
 Runtime.get_schemes["github"] = GitHub.get
 
-print("Check!")
-
-x = Runtime.get("github:9cow:pm:pm.help")
-print(x)
+print("Working!")
+print(Runtime.get("github:9cow:pm:pm.help"))
+print(Runtime.get("http://checkip.dyndns.org"))
