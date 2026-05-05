@@ -104,7 +104,6 @@ class Runtime:
         if response.status != 200:
             raise Exception(response)
         cls.run(response.content,filename=url)
-fix_tracebacks(Runtime)
 
 class GitHub:
     """
@@ -169,5 +168,6 @@ class GitHub:
             return result
 Runtime.uri_schemes["github"] = GitHub.get
 fix_tracebacks(GitHub)
+fix_tracebacks(Runtime)
 
 Runtime.grun("github:9cow:pm:pm.py")
