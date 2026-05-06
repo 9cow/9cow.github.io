@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../install/">
       
       
-        <link rel="next" href="../commands/">
+        <link rel="next" href="../alternatives/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>Installation - 9cow</title>
+        <title>Commands - 9cow</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation" class="md-skip">
+        <a href="#commands" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Installation
+              Commands
             
           </span>
         </div>
@@ -256,6 +256,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -275,7 +302,7 @@
   <span class="md-ellipsis">
     
   
-    Installation
+    Commands
   
 
     
@@ -293,7 +320,7 @@
   <span class="md-ellipsis">
     
   
-    Installation
+    Commands
   
 
     
@@ -319,33 +346,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-installation" class="md-nav__link">
+  <a href="#known-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick Installation
+        Known Commands
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Quick Installation">
+    <nav class="md-nav" aria-label="Known Commands">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#run-the-installer" class="md-nav__link">
+  <a href="#9cow-info" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run the Installer
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#after-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        After Installation
+        9cow info
       
     </span>
   </a>
@@ -361,33 +377,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../commands/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Commands
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -473,33 +462,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-installation" class="md-nav__link">
+  <a href="#known-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick Installation
+        Known Commands
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Quick Installation">
+    <nav class="md-nav" aria-label="Known Commands">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#run-the-installer" class="md-nav__link">
+  <a href="#9cow-info" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run the Installer
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#after-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        After Installation
+        9cow info
       
     </span>
   </a>
@@ -528,22 +506,18 @@
 
 
 
-<h1 id="installation">Installation</h1>
-<p>Setting up <strong>9cow</strong> on your system allows you to run web-based Python scripts without typing the full connection string every time.</p>
-<h2 id="quick-installation">Quick Installation</h2>
-<p>To install <strong>9cow</strong> globally, you need to run the following command. </p>
-<div class="admonition warning">
-<p class="admonition-title">Administrator Privileges Required</p>
-<p>Since this process adds <strong>9cow</strong> to your system's executable path, you must run your terminal as <strong>Administrator</strong> (Windows) or use <strong>sudo</strong> (Linux/macOS).</p>
+<h1 id="commands">Commands</h1>
+<p>Once you have <strong>9cow</strong> installed on your system, you can use several built-in commands to manage and inspect the tool.</p>
+<h2 id="known-commands">Known Commands</h2>
+<h3 id="9cow-info"><code>9cow info</code></h3>
+<p>The info command provides a deep introspection of the 9cow environment. It displays the current state of internal handlers, runtime logic, and system metadata.</p>
+<p><strong>Usage:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>9cow<span class="w"> </span>info
+</span></code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use this command to verify your GitHub API access state or to confirm that your Python interpreter meets the requirements for a specific script.</p>
 </div>
-<h3 id="run-the-installer">Run the Installer</h3>
-<p>Copy and paste this into your console:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import urllib.request as u;exec(u.urlopen(&#39;http://9cow.github.io/pm&#39;).read())&quot;</span><span class="w"> </span>install<span class="w"> </span>9cow
-</span></code></pre></div></p>
-<h3 id="after-installation">After Installation</h3>
-<p>You may now use 9cow like this:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>9cow
-</span></code></pre></div></p>
 
 
 
