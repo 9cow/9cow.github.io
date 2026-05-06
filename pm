@@ -13,6 +13,7 @@ import base64
 import uuid
 import urllib.request
 import urllib.error
+from urllib.parse import urlparse
 from types import SimpleNamespace
 from enum import Enum, auto
 
@@ -27,7 +28,7 @@ class Runtime:
     The core engine that manages HTTP connections and dynamic code execution.
     """
     uri_schemes = {}
-    updated = "2026-05-05 06:55:39"
+    updated = "2026-05-06 02:59:01"
     default_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': '*/*',
@@ -77,15 +78,14 @@ class Runtime:
             raise e
 
     @classmethod
-    def get(cls, url, headers=None, content_type=ContentTypeEnum.TEXT,timeout=10):
+    def get(cls, uri, headers=None, content_type=ContentTypeEnum.TEXT,timeout=10):
         """
-    A routing method. It checks the URL scheme (e.g., github:). If the scheme is registered in get_schemes, it redirects the task to the specific handler; otherwise, it performs a standard httpGet.
+    A routing method. It checks the URI scheme (e.g., github:). If the scheme is registered in get_schemes, it redirects the task to the specific handler; otherwise, it performs a standard httpGet.
         """
-        scheme,_,_ = url.partition(":") #RFC 3986   https://www.rfc-editor.org/rfc/rfc3986.html#section-3
+        scheme = urlparse(uri).scheme #https://www.rfc-editor.org/rfc/rfc3986.html#section-3.1 
         if scheme in cls.uri_schemes:
-            func = cls.uri_schemes[scheme]
-            return func(url,headers=headers,content_type=content_type,timeout=timeout)
-        return cls.httpGet(url,headers=headers,content_type=content_type,timeout=timeout)
+            return cls.uri_schemes[scheme](uri,headers=headers,content_type=content_type,timeout=timeout)
+        return cls.httpGet(uri,headers=headers,content_type=content_type,timeout=timeout)
 
     @classmethod
     def run(cls,code, filename=""):
