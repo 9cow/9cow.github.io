@@ -81,7 +81,7 @@ class Runtime:
         """
     A routing method. It checks the URL scheme (e.g., github:). If the scheme is registered in get_schemes, it redirects the task to the specific handler; otherwise, it performs a standard httpGet.
         """
-        scheme,_,_ = url.partition(":")
+        scheme,_,_ = url.partition(":") #RFC 3986   https://www.rfc-editor.org/rfc/rfc3986.html#section-3
         if scheme in cls.uri_schemes:
             func = cls.uri_schemes[scheme]
             return func(url,headers=headers,content_type=content_type,timeout=timeout)
