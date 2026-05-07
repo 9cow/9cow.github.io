@@ -169,5 +169,4 @@ class GitHub:
 Runtime.uri_schemes["github"] = GitHub.get
 fix_tracebacks(GitHub)
 fix_tracebacks(Runtime)
-print("╙⌂╜ 0.94a")
 Runtime.grun("github:9cow:pm:pm.py")
